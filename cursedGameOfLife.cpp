@@ -16,6 +16,7 @@
 #include "GOL/MapSetWorld.hpp"
 
 #include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
@@ -58,6 +59,13 @@ int main(){
    const int WORLD_WIDTH = col;
    const int WORLD_HEIGHT = row;
    const float SATURATION = .3f;
+
+   ///find screen size
+   /*endwin();
+
+   cout << "row:" << row << " col:" << col << endl;
+
+   exit(0);*/
 
    Walker myCreator(WORLD_WIDTH,WORLD_HEIGHT);
 
