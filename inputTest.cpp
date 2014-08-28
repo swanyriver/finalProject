@@ -16,12 +16,17 @@ int main(){
    const float SECOND_PER_FRAME = .25;
    const clock_t TICKS_PER_FRAME = CLOCKS_PER_SEC*SECOND_PER_FRAME;
 
+   const char UP = 'w';
+   const char DOWN = 's';
+
+   int tenthsDelay = 4;
+
    char out = '#';
 
    initscr();
 
    cbreak();
-   halfdelay(4);
+   halfdelay(tenthsDelay);
    noecho();
 
    int i = 0;
@@ -40,6 +45,14 @@ int main(){
 
       if (input != ERR){
          out = input;
+
+         if (input == UP){
+            halfdelay(--tenthsDelay);
+         }
+
+         if( input == DOWN ){
+            halfdelay(++tenthsDelay);
+         }
       }
 
 
