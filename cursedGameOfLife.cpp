@@ -15,46 +15,42 @@
 #include "GOL/WorldTools.hpp"
 #include "GOL/MapSetWorld.hpp"
 
-#include <ctime>
-#include <cstdlib>
 
 using namespace std;
 
+const char FASTER = 'w';
+const char SLOWER = 's';
+const char QUIT = 'q';
+
+const int START_TENTHS_OF_SECOND = 3;
+const int MAX_TENTHS_OF_SECOND = 10;
+
+int delayTenthsOfASecond = START_TENTHS_OF_SECOND;
+
 void outputWorldINT ( WorldDisplayInterface* display );
+bool input();
 
 int main(){
-   /*const int WORLD_WIDTH = 80;
-   const int WORLD_HEIGHT = 22;
-   const float SATURATION = .3f;*/
 
-   //const float SECOND_PER_FRAME = .25;
-   const float SECOND_PER_FRAME = .25 / 4;
-   const clock_t TICKS_PER_FRAME = CLOCKS_PER_SEC*SECOND_PER_FRAME;
-
-
+   //initializations
    swansonUtil::SeedRandom();
 
-
-   //Walker myCreator(WORLD_WIDTH,WORLD_HEIGHT);
    GOL::LivingCellStartSet genesis;
-
-   /*int max = WORLD_HEIGHT*WORLD_WIDTH;
-   myCreator.getSet(genesis,RandomWalker::GetWalkString(max,SATURATION),
-           WORLD_WIDTH/2,WORLD_HEIGHT/2);
-
-   God myGod( new MpSWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ) );
-   WorldDisplayInterface* VoiceOfGod = myGod.GetWorldDisplayInt();*/
-
 
 
    initscr();  //start curses
 
+   cbreak();
+   halfdelay(delayTenthsOfASecond);
+   noecho();
+
    start_color();
    init_pair(2,COLOR_GREEN,COLOR_GREEN);
 
-   int row,col;            /* to store the number of rows and *
-                   * the number of colums of the screen */
-   getmaxyx(stdscr,row,col);    /* get the number of rows and columns */
+
+   ////////pass by refrence
+   int row,col;
+   getmaxyx(stdscr,row,col);
 
    const int WORLD_WIDTH = col;
    const int WORLD_HEIGHT = row;
@@ -76,19 +72,19 @@ int main(){
    God myGod( new MpSWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ) );
    WorldDisplayInterface* VoiceOfGod = myGod.GetWorldDisplayInt();
 
-   while(true){
-      clock_t timeout=clock() + TICKS_PER_FRAME;
+   do {
+
       //put world in window
       outputWorldINT(VoiceOfGod);
       //get next generation
       myGod.Generation();
       //refresh window after delay
-      while(clock() < timeout){
-         //nothing, just wait
-      }
+
       refresh();
 
-   }
+
+
+   } while (input());
 
 
    endwin();  /* End curses mode        */
@@ -109,6 +105,31 @@ void outputWorldINT ( WorldDisplayInterface* display ){
       mvaddch(nextCord.y,nextCord.x,' ' | COLOR_PAIR(2));
 
    }
+}
+
+
+//////////////////input
+
+bool input(){
+   char input = getch();
+
+   if(input != ERR){
+      switch (input) {
+         case FASTER:
+            halfdelay(--delayTenthsOfASecond);
+            break;
+         case SLOWER:
+            halfdelay(--delayTenthsOfASecond);
+            break;
+         case QUIT:
+            return false;
+
+            break;
+         default:
+            break;
+      }
+   }
+   return true;
 }
 
 

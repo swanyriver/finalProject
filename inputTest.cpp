@@ -9,6 +9,20 @@
 #include <ncurses.h>
 #include <ctime>
 
+struct Input{
+   char FASTER;
+   char SLOWER;
+   char PAUSE;
+   char QUIT;
+};
+
+const Input CONTROLS = {
+      'w', //Faster
+      's', //Slower
+      ' ', //pause
+      'q'  //quit
+};
+
 void getInput();
 
 int main(){
@@ -16,8 +30,7 @@ int main(){
    const float SECOND_PER_FRAME = .25;
    const clock_t TICKS_PER_FRAME = CLOCKS_PER_SEC*SECOND_PER_FRAME;
 
-   const char UP = 'w';
-   const char DOWN = 's';
+
 
    int tenthsDelay = 4;
 
