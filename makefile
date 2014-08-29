@@ -10,7 +10,7 @@
 CC=g++
 CFLAGS=-c
 LDFLAGS=-lncurses
-SOURCES=cursedGameOfLife.cpp
+SOURCES=cursedGameOfLife.cpp SwansonFunctions.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=FUNEX
 

@@ -14,8 +14,9 @@
 #include <utility>
 #include <istream>
 #include <sstream>
-#include "../SwansonLibs/swansonString.hpp"
-#include "../SwansonLibs/swansonUtils.hpp"
+
+
+#include "../SwansonFunctions.hpp"
 
 
 using namespace std; //todo find needed refrences to this
@@ -90,53 +91,7 @@ const char Walker::SE = 'c';
 const char Walker::terminate = '!';
 
 const char Walker::inputChars[] = {North,South,West,East,SW,SE,NW,NE};
-//const string Walker::glider = "WCSAA";
 
-const string Walker::glider = swansonString::UpperCase(
-      swansonString::GetString(Walker::SE) +
-      swansonString::GetString(Walker::SE) +
-      swansonString::GetString(Walker::East) +
-      swansonString::GetString(Walker::North) +
-      swansonString::GetString(Walker::North));
-
-const string Walker::Tumbler =
-      swansonString::GetString(Walker::West) +
-      swansonString::GetString(Walker::West) +
-
-      swansonString::UpperCase(
-     swansonString::GetString(Walker::SW) +
-     swansonString::GetString(Walker::South) +
-     swansonString::GetString(Walker::South) +
-     swansonString::GetString(Walker::East) +
-     swansonString::GetString(Walker::NE) +
-     swansonString::GetString(Walker::North) +
-     swansonString::GetString(Walker::North) +
-     swansonString::GetString(Walker::North) +
-     swansonString::GetString(Walker::North) +
-     swansonString::GetString(Walker::West) +
-     swansonString::GetString(Walker::South))+
-
-     swansonString::GetString(Walker::East) +
-     swansonString::GetString(Walker::East) +
-     swansonString::GetString(Walker::East) +
-     //swansonString::GetString(Walker::West) +
-
-     swansonString::UpperCase(
-     swansonString::GetString(Walker::East) +
-     swansonString::GetString(Walker::North) +
-     swansonString::GetString(Walker::West) +
-     swansonString::GetString(Walker::South) +
-     swansonString::GetString(Walker::South) +
-     swansonString::GetString(Walker::South) +
-     swansonString::GetString(Walker::South) +
-     swansonString::GetString(Walker::SE) +
-     swansonString::GetString(Walker::East) +
-     swansonString::GetString(Walker::North) +
-     swansonString::GetString(Walker::North));
-
-
-
-//todo add glider width and height
 
 Walker::Walker ( int width , int height ) :
       WORLD_WIDTH( width ), WORLD_HEIGHT( height ) {
@@ -213,41 +168,22 @@ void Walker::getSet ( GOL::LivingCellStartSet &cellSet, std::istream &myStream,
    }//end of while
 }//end of function
 
-void Walker::getGliderWorld(GOL::LivingCellStartSet &cellSet){
-   string GliderWorld;
-
-   int buffer = 2;
-
-   for(int row = 0; row < ((this->WORLD_HEIGHT-buffer)/(GLIDER_SIZE+buffer)); row++){
-      for(int col = 0; col < ((this->WORLD_WIDTH-buffer)/(GLIDER_SIZE+buffer)); col++){
-         GliderWorld += Walker::glider;
-         GliderWorld.append(buffer,Walker::East);
-      }
-      GliderWorld.append(GLIDER_SIZE+buffer,Walker::South);
-   }
-
-   GliderWorld.append(1,terminate);
-
-
-   this->getSet(cellSet,GliderWorld);
-
-}
-
-
-
-
-
 class RandomWalker{
 private:
    static const float DEFAULT_CLUSTERING;
 
    static string Walk(int &cellNumber, float clustering){
-      char nextStep = Walker::inputChars[swansonUtil::GetRandomInRange(7)];
-      if(swansonUtil::GetRandomInRange(100)>(clustering*100)){
+
+      //----------------------------------------------------------------------
+      // Requirement #5: demonstrate a Random Number
+      //----------------------------------------------------------------------
+
+      char nextStep = Walker::inputChars[swansonB::GetRandomInRange(7)];
+      if(swansonB::GetRandomInRange(100)>(clustering*100)){
          nextStep -= Walker::upper;
          cellNumber++;
       }
-      return swansonString::GetString(nextStep);
+      return swansonB::GetString(nextStep);
    }
 
 public:
@@ -260,7 +196,7 @@ public:
          walkStr += Walk(cellNumber,clustring);
       }
 
-      walkStr += swansonString::GetString(Walker::terminate);
+      walkStr += swansonB::GetString(Walker::terminate);
       return walkStr;
 
 
@@ -280,7 +216,7 @@ public:
          walkStr += Walk(cellNumber,clustring);
          takenSteps++;
       }
-      walkStr += swansonString::GetString(Walker::terminate);
+      walkStr += swansonB::GetString(Walker::terminate);
       return walkStr;
 
    }

@@ -10,8 +10,10 @@
 #include <exception>
 #include <fstream>
 
-#include "SwansonLibs/swansonInput.hpp"
-#include "SwansonLibs/swansonUtils.hpp"
+//#include "SwansonLibs/swansonInput.hpp"
+//#include "SwansonLibs/swansonUtils.hpp"
+
+#include "SwansonFunctions.hpp"
 
 #include "GOL/GameOfLife.hpp"
 #include "GOL/God.hpp"
@@ -72,7 +74,7 @@ int main( int argc , char **argv){
    }
 
    //initializations
-   swansonUtil::SeedRandom();
+   swansonB::SeedRandom();
 
    GOL::LivingCellStartSet genesis;
 
@@ -146,19 +148,31 @@ int main( int argc , char **argv){
    start_color();
    init_pair(2,COLOR_GREEN,COLOR_GREEN);
 
+   bool quit;
 
+   //----------------------------------------------------------------------
+   // Requirement #4: demonstrate a loop
+   //----------------------------------------------------------------------
    do {
+
+      //----------------------------------------------------------------------
+      // Requirement #9: demonstrate Functional Decomposition
+      //----------------------------------------------------------------------
+      // this is the entire repeated operations of the game of life
+      // broken down into output, calculations, and input
 
       //put world in window
       outputWorldINT(VoiceOfGod, myGod.GenerationsPassed(), WORLD_HEIGHT);
-
-      //get next generation
-      myGod.Generation();
-      //refresh window after delay
-
       refresh();
 
-   } while (input());
+      //advance game of life world
+      myGod.Generation();
+
+      ///change speed of animation or quit
+      quit = input();
+
+
+   } while (!quit);
 
 
    endwin();
@@ -167,10 +181,17 @@ int main( int argc , char **argv){
 
 void getScreenSize(int &row, int &col){
    endwin();
-   cout << "Please manually enter your screen resolution";
 
-   row =swansonInput::GetInt("Rows: ",0,150);
-   col =swansonInput::GetInt("Columns: ",0,150);
+   //----------------------------------------------------------------------
+   // Requirement #1: demonstrate simple IO
+   //----------------------------------------------------------------------
+   // here we have a cout statement
+   // follow the call to GetInt to see the use of getline()
+
+   cout << "Please manually enter your screen resolution" << endl;
+
+   row =swansonB::GetInt("Rows: ",0,150);
+   col =swansonB::GetInt("Columns: ",0,150);
 
    initscr();
 
@@ -192,13 +213,13 @@ void outputWorldINT ( WorldDisplayInterface* display , int numberOfGenerations,
    }
 
    string bottomLine = "Generations:";
-   bottomLine+= swansonString::GetString(numberOfGenerations);
+   bottomLine+= swansonB::GetString(numberOfGenerations);
    bottomLine+= "  Speed up:";
-   bottomLine+= swansonString::GetString(FASTER);
+   bottomLine+= swansonB::GetString(FASTER);
    bottomLine+= " down:";
-   bottomLine+= swansonString::GetString(SLOWER);
+   bottomLine+= swansonB::GetString(SLOWER);
    bottomLine+= " Quit:";
-   bottomLine+= swansonString::GetString(QUIT);
+   bottomLine+= swansonB::GetString(QUIT);
 
    mvaddstr(height,0,bottomLine.c_str());
 }
@@ -222,7 +243,7 @@ bool input(){
             }
             break;
          case QUIT:
-            return false;
+            return true;
 
             break;
          default:
@@ -244,7 +265,7 @@ bool input(){
 
    }
 
-   return true;
+   return false;
 }
 
 
