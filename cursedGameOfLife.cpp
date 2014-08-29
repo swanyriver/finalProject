@@ -9,6 +9,7 @@
 #include <string>
 #include <exception>
 #include <fstream>
+#include <iostream>
 
 //#include "SwansonLibs/swansonInput.hpp"
 //#include "SwansonLibs/swansonUtils.hpp"
@@ -20,6 +21,7 @@
 #include "GOL/WalkerMaker.hpp"
 #include "GOL/WorldTools.hpp"
 #include "GOL/MapSetWorld.hpp"
+#include "GOL/arrayWorld.hpp"
 
 
 using namespace std;
@@ -135,6 +137,11 @@ int main( int argc , char **argv){
            WORLD_WIDTH/2,WORLD_HEIGHT/2);
 
    God myGod( new MpSWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ) );
+
+   if(ArrayWorld){
+      God myGod( new ArrayWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ));
+   }
+
    WorldDisplayInterface* VoiceOfGod = myGod.GetWorldDisplayInt();
 
 

@@ -18,7 +18,6 @@
 #include <iterator>
 #include <cassert>
 
-#include <iostream>
 #include <cstdio>
 
 using namespace std;
@@ -173,8 +172,8 @@ private:
    MapSetWorld *mpsWorld;
    MapSetWorld::neighborMap::iterator mNbLookUp;
 public:
-   MpSWorldReap(WORLD *world, MapSetWorld *mpsworld ):
-      WorldReapingInterface(world),mpsWorld(mpsworld){};
+   MpSWorldReap( MapSetWorld *mpsworld ):
+      WorldReapingInterface(mpsworld),mpsWorld(mpsworld){};
 
    virtual void NeighborCellBegin(){
       mNbLookUp = mpsWorld->mNeigborNums.begin();
@@ -189,7 +188,18 @@ public:
       result.alive = mpsWorld->pThisGen->count(mNbLookUp->first);
       mNbLookUp++;
 
+      //----------------------------------------------------------------------
+      // Requirement #07: Demonstrate debugging trick
+      //----------------------------------------------------------------------
+      //using assert to catch logic errors
       assert(result.numNeighbors<9);
+
+      //----------------------------------------------------------------------
+      // Requirement #06: Demonstrate 3 kinds of errors  --Logic
+      //----------------------------------------------------------------------
+      //This assert was caught because i had along the chain of function calls
+      //Passed width twice instead of width and height, and therefore the
+      //the calculations were off
 
       return result;
    }
@@ -205,7 +215,6 @@ public:
    }
 };
 
-//todo make mapset worldbuilder
 class MpSWorldBuilder: public WorldBuilder{
 public:
    MpSWorldBuilder( int width , int height, GOL::LivingCellStartSet &inStart ):
@@ -221,7 +230,7 @@ WorldDisplayInterface* MapSetWorld::GetDisplayInterface(){
    return new MpSWorldDisplay(this);
 }
 WorldReapingInterface* MapSetWorld::GetReapingInterface(){
-   return new MpSWorldReap(this,this);
+   return new MpSWorldReap(this);
 }
 
 
