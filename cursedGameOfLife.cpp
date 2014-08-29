@@ -6,6 +6,9 @@
  */
 
 #include <ncurses.h>
+#include <string>
+#include <exception>
+#include <fstream>
 
 #include "SwansonLibs/swansonInput.hpp"
 #include "SwansonLibs/swansonUtils.hpp"
@@ -26,6 +29,10 @@ const int START_TENTHS_OF_SECOND = 3;
 const int MAX_TENTHS_OF_SECOND = 10;
 
 int delayTenthsOfASecond = START_TENTHS_OF_SECOND;
+
+
+const char logFileName[9] = {'l','i','f','e','.','l','o','g','\0'};
+
 
 void outputWorldINT ( WorldDisplayInterface* display );
 bool input();
@@ -49,19 +56,13 @@ int main(){
 
 
    ////////pass by refrence
+   ///find screen size
    int row,col;
    getmaxyx(stdscr,row,col);
 
    const int WORLD_WIDTH = col;
    const int WORLD_HEIGHT = row;
    const float SATURATION = .3f;
-
-   ///find screen size
-   /*endwin();
-
-   cout << "row:" << row << " col:" << col << endl;
-
-   exit(0);*/
 
    Walker myCreator(WORLD_WIDTH,WORLD_HEIGHT);
 
@@ -87,7 +88,7 @@ int main(){
    } while (input());
 
 
-   endwin();  /* End curses mode        */
+   endwin();
 
 }
 
@@ -116,10 +117,14 @@ bool input(){
    if(input != ERR){
       switch (input) {
          case FASTER:
-            halfdelay(--delayTenthsOfASecond);
+            if(delayTenthsOfASecond > 1){
+               halfdelay(--delayTenthsOfASecond);
+            }
             break;
          case SLOWER:
-            halfdelay(--delayTenthsOfASecond);
+            if(delayTenthsOfASecond < MAX_TENTHS_OF_SECOND){
+               halfdelay(++delayTenthsOfASecond);
+            }
             break;
          case QUIT:
             return false;
@@ -128,7 +133,22 @@ bool input(){
          default:
             break;
       }
+
+      //----------------------------------------------------------------------
+      // Requirement #07: Demonstrate debugging trick
+      //----------------------------------------------------------------------
+      // This allows me to check the functioning of this input function
+      // I can observe the output live using 'tail filename -f'
+
+      ////logfile output
+      ofstream log(logFileName, ios::app);
+      log << "input recieved: " << input
+            << " , updating every " << delayTenthsOfASecond
+            << " tenths of a second" << endl;
+      log.close();
+
    }
+
    return true;
 }
 
