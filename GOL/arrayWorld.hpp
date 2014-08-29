@@ -33,6 +33,14 @@ protected:
    typedef bool** liveCells;
    //member variables
 
+
+   //----------------------------------------------------------------------
+   // Requirement #17: demonstrate pointers  -- to array
+   //----------------------------------------------------------------------
+   //
+   // in this version of the world class the live cells are stored in two
+   // dimensional arrays of bools that are defined as bool** a pointers to
+   // pointers
    liveCells pThisGen;
    liveCells pNextGen;
 

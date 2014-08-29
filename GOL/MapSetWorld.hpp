@@ -131,6 +131,14 @@ public:
 
    ///switch generaton data set pointers
    void generation (){
+
+      //----------------------------------------------------------------------
+      // Requirement #17: demonstrate pointers  -- to object
+      //----------------------------------------------------------------------
+      //
+      // the pointers pThisGen, and pNextGen point to two persistent map
+      // map objects and the operations performed on the maps alternate
+      // each generations
       cordSet *pTemp = pThisGen;
       pThisGen = pNextGen;
       pNextGen = pTemp;
@@ -174,6 +182,14 @@ public:
       mCellLookUp = mpsWorld->pThisGen->begin();
    }
    GOL::cordinate NextLivingCellLoc(){
+      //----------------------------------------------------------------------
+      // Requirement #17: demonstrate pointers  -- to struct
+      //----------------------------------------------------------------------
+      //
+      // mCellLookUp is an iterator that points to a set of structs of type
+      // GOL::cordinate, the dereference operator * allows it for the return
+      // of the struct being pointed to by the iterator
+      //
       return *mCellLookUp++;
    }
    long int NumLiving(){

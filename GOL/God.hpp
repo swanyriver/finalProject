@@ -39,6 +39,27 @@ public:
    WorldDisplayInterface* GetWorldDisplayInt(){
       return myWORLD->GetDisplayInterface();
    }
+
+
+   //----------------------------------------------------------------------
+   // Requirement #25: demonstrate overloaded operator
+   //----------------------------------------------------------------------
+   //
+   // provides a syntax sugar way to call the Generation() method
+   //
+   God operator ++(){
+
+      this->Generation();
+
+      return *this;
+   }
+
+   God operator ++(int i){
+
+      this->Generation();
+
+      return *this;
+   }
 };
 
 

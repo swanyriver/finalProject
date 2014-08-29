@@ -182,7 +182,7 @@ int main( int argc , char **argv){
       refresh();
 
       //advance game of life world
-      myGod.Generation();
+      myGod++;
 
       ///change speed of animation or quit
       quit = input();
