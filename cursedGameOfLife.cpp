@@ -238,6 +238,19 @@ void outputWorldINT ( WorldDisplayInterface* display , int numberOfGenerations,
    bottomLine+= swansonB::GetString(QUIT);
 
    mvaddstr(height,0,bottomLine.c_str());
+
+   //----------------------------------------------------------------------
+   // Requirement #11: Demonstrate Passing methods - Pass by value
+   //----------------------------------------------------------------------
+   // the following modification to the variable numberOfGenerations will have
+   // no lasting effect on the program because this variable was passed by value
+   // and therefore is local to this function, it is about to pass out of scope
+   // if there were a copy of the variable passed in to this function
+   // it would be unaffected by this modification
+   //
+   // in this case it was passed in "anonymously" as the return of a function
+   // call
+   numberOfGenerations++;
 }
 
 

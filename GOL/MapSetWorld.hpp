@@ -56,8 +56,22 @@ public:
 
    }
 
+
+
    //used internally, but does not depend on internal state, so made static
    //for ease of testing and re-usability.
+
+   //----------------------------------------------------------------------
+   // Requirement #11: Demonstrate various passing methods
+   //----------------------------------------------------------------------
+   //
+   // this function utilizes passing by array which is similar to passing by
+   // pointer but is distinguished in the textbook as being a special separate
+   // method for passing arrays,  this function signature could also be written
+   // GOL::cordinate* mooreNB and when an array was passed at the parameter
+   // the pointer would point to first item in the array and the [] would
+   // dereference with an offset
+   //
    static void YourNeighbors ( const GOL::cordinate &loc ,
          GOL::cordinate mooreNB[],
          const int &width, const int &height ){
@@ -197,9 +211,12 @@ public:
       //----------------------------------------------------------------------
       // Requirement #06: Demonstrate 3 kinds of errors  --Logic
       //----------------------------------------------------------------------
-      //This assert was caught because i had along the chain of function calls
+      //This assert was caught because I had along the chain of function calls
       //Passed width twice instead of width and height, and therefore the
       //the calculations were off
+      // The program was able to compile, and even run without hitting any
+      // runtime errors,  but the behavior of the cells did not match test
+      // cases,
 
       return result;
    }
