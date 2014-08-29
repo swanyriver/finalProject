@@ -175,7 +175,7 @@ private:
    static string Walk(int &cellNumber, float clustering){
 
       //----------------------------------------------------------------------
-      // Requirement #5: demonstrate a Random Number
+      // Requirement #05: demonstrate a Random Number
       //----------------------------------------------------------------------
 
       char nextStep = Walker::inputChars[swansonB::GetRandomInRange(7)];

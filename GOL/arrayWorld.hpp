@@ -1,47 +1,36 @@
 /*
- * MapSetWorld.hpp
+ * arrayWorld.hpp
  *
- *  Created on: Aug 11, 2014
+ *  Created on: Aug 28, 2014
  *      Author: brandon
  */
 
-#ifndef MAPSETWORLD_HPP_
-#define MAPSETWORLD_HPP_
+#ifndef ARRAYWORLD_HPP_
+#define ARRAYWORLD_HPP_
+
+#include <map>
+#include <utility>
 
 #include "World.hpp"
 #include "WorldTools.hpp"
 #include "GameOfLife.hpp"
 
-#include <map>
-#include <set>
-#include <utility>
-#include <iterator>
-#include <cassert>
+class ArrayWorldDisplay;
+class ArrayWorldReap;
 
-#include <iostream>
-#include <cstdio>
 
-using namespace std;
-
-class MpSWorldDisplay;
-class MpSWorldReap;
-
-class MapSetWorld: public WORLD{
-   friend class MpSWorldDisplay;
-   friend class MpSWorldReap;
+class ArrayWorld: public WORLD{
+   friend class ArrayWorldDisplay;
+   friend class ArrayWorldReap;
 protected:
 
-   //typedefs
-   typedef std::set<GOL::cordinate,GOL::cordinate> cordSet;
-   typedef std::pair<GOL::cordinate,int> NbCountPair;
    typedef std::map<GOL::cordinate,int,GOL::cordinate> neighborMap;
-
-
+   typedef bool** liveCells;
    //member variables
-   cordSet mLivingCellsA;
-   cordSet mLivingCellsB;
-   cordSet *pThisGen;
-   cordSet *pNextGen;
+   liveCells mLivingCellsA;
+   liveCells mLivingCellsB;
+   liveCells *pThisGen;
+   liveCells *pNextGen;
 
    neighborMap mNeigborNums;
 
@@ -224,6 +213,4 @@ WorldReapingInterface* MapSetWorld::GetReapingInterface(){
    return new MpSWorldReap(this,this);
 }
 
-
-
-#endif /* MAPSETWORLD_HPP_ */
+#endif /* ARRAYWORLD_HPP_ */

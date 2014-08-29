@@ -151,12 +151,12 @@ int main( int argc , char **argv){
    bool quit;
 
    //----------------------------------------------------------------------
-   // Requirement #4: demonstrate a loop
+   // Requirement #04: demonstrate a loop
    //----------------------------------------------------------------------
    do {
 
       //----------------------------------------------------------------------
-      // Requirement #9: demonstrate Functional Decomposition
+      // Requirement #09: demonstrate Functional Decomposition
       //----------------------------------------------------------------------
       // this is the entire repeated operations of the game of life
       // broken down into output, calculations, and input
@@ -183,7 +183,7 @@ void getScreenSize(int &row, int &col){
    endwin();
 
    //----------------------------------------------------------------------
-   // Requirement #1: demonstrate simple IO
+   // Requirement #01: demonstrate simple IO
    //----------------------------------------------------------------------
    // here we have a cout statement
    // follow the call to GetInt to see the use of getline()

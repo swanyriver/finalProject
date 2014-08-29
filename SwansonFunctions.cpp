@@ -37,7 +37,7 @@ string swansonB::GetString ( string prompt ) {
    }
 
    //----------------------------------------------------------------------
-   // Requirement #1: demonstrate simple IO
+   // Requirement #01: demonstrate simple IO
    //----------------------------------------------------------------------
    // base method for get int gets a string from the cin stream
    getline( cin , str_rtrn );
@@ -56,7 +56,7 @@ string swansonB::GetString ( string prompt ) {
  ******************************************************************************/
 
 //----------------------------------------------------------------------
-// Requirement #9: demonstrate function and overloading
+// Requirement #09: demonstrate function and overloading
 //----------------------------------------------------------------------
 int swansonB::GetInt ( string prompt ) {
    return swansonB::GetInt( prompt , INT_MIN , INT_MAX );
@@ -73,7 +73,7 @@ int swansonB::GetInt ( string prompt ) {
 int swansonB::GetInt ( string prompt , int rangeMin , int rangeMax ) {
 
    //----------------------------------------------------------------------
-   // Requirement #2: demonstrate explicit typecasting
+   // Requirement #02: demonstrate explicit typecasting
    //----------------------------------------------------------------------
    return static_cast<int>( swansonB::GetLong( prompt , rangeMin , rangeMax ) );
 }
@@ -172,7 +172,7 @@ int swansonB::GetRandomInRange ( int min , int max ) {
       return min;
 
    //----------------------------------------------------------------------
-   // Requirement #5: demonstrate a Random Number
+   // Requirement #05: demonstrate a Random Number
    //----------------------------------------------------------------------
    //
    // see RandomWalker in WalkerMaker.hpp class
