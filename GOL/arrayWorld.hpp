@@ -31,10 +31,9 @@ protected:
    typedef std::map<GOL::cordinate,int,GOL::cordinate> neighborMap;
    typedef bool** liveCells;
    //member variables
-   liveCells mLivingCellsA;
-   liveCells mLivingCellsB;
-   liveCells *pThisGen;
-   liveCells *pNextGen;
+
+   liveCells pThisGen;
+   liveCells pNextGen;
 
    neighborMap mNeigborNums;
 
@@ -74,18 +73,16 @@ public:
       // Requirement #14: demonstrate Dynamic multi-dimensional arrays
       //----------------------------------------------------------------------
 
-      mLivingCellsA = new bool*[height];
-      mLivingCellsB = new bool*[height];
+      pThisGen = new bool*[height];
+      pNextGen = new bool*[height];
       for(int i = 0; i < height; i++){
-         mLivingCellsA[i] = new bool[width];
-         mLivingCellsB[i] = new bool[width];
+         pThisGen[i] = new bool[width];
+         pNextGen[i] = new bool[width];
       }
 
-      ClearLiveCells(mLivingCellsA);
-      ClearLiveCells(mLivingCellsB);
+      ClearLiveCells(pThisGen);
+      ClearLiveCells(pNextGen);
 
-      pThisGen = &mLivingCellsA;
-      pNextGen = &mLivingCellsB;
 
       //todo make an array from the set //*pThisGen = start;
 
@@ -111,7 +108,7 @@ public:
 
       for (int row = 0; row < this->WORLD_HEIGHT; row++){
          for (int col = 0; col < this->WORLD_WIDTH; col++){
-            if((*pThisGen)[row][col] == ALIVE){
+            if(pThisGen[row][col] == ALIVE){
                YourNeighbors(GOL::GetCord(col,row),mooreNB);
 
                for(int i=0; i<8; i++){
@@ -131,11 +128,11 @@ public:
 
    ///switch generaton data set pointers
    void generation (){
-      liveCells *pTemp = pThisGen;
+      liveCells pTemp = pThisGen;
       pThisGen = pNextGen;
       pNextGen = pTemp;
 
-      ClearLiveCells(*pNextGen);
+      ClearLiveCells(pNextGen);
 
    }
 
@@ -146,7 +143,7 @@ public:
 
    //called by Angel after Calculations
    void Live ( const GOL::cordinate &loc ){
-      (*pNextGen)[loc.y][loc.x] = ALIVE;
+      pNextGen[loc.y][loc.x] = ALIVE;
    }
    void Birth ( const GOL::cordinate &loc ){
       //duplicate behavior of life (for now)
