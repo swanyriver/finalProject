@@ -265,6 +265,11 @@ public:
 
 
    }
+
+   //----------------------------------------------------------------------
+   // Requirement #12: demonstrate cstring and string
+   //----------------------------------------------------------------------
+
    static string GetWalkString(int maxCells, int steps,
          float clustring = RandomWalker::DEFAULT_CLUSTERING){
       string walkStr;
