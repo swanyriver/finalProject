@@ -19,7 +19,7 @@
 #include "../SwansonFunctions.hpp"
 
 
-using namespace std; //todo find needed refrences to this
+using namespace std;
 
 class Walker {
 private:
@@ -112,6 +112,15 @@ Walker::Walker ( int width , int height ) :
 
 }
 
+//----------------------------------------------------------------------
+// Requirement #24: demonstrate polymorphism and inheritance
+//----------------------------------------------------------------------
+//
+//The istream class is a base class for different versions of streams that all
+// in inherit the >> operand and other functions.
+// I have tested using this function with the cin stream, filestreams and
+// stringstreams
+//
 void Walker::getSet ( GOL::LivingCellStartSet &cellSet, std::istream &myStream,
       int startx, int starty) {
 

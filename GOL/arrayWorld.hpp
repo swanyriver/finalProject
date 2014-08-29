@@ -18,6 +18,7 @@
 #include "GameOfLife.hpp"
 #include "MapSetWorld.hpp"
 
+
 class ArrayWorldDisplay;
 class ArrayWorldReap;
 
@@ -54,12 +55,23 @@ private:
          }
       }*/
 
+      //----------------------------------------------------------------------
+      // Requirement #06: demonstrate error categories   -RUNTIME
+      //----------------------------------------------------------------------
+      //----------------------------------------------------------------------
+      // Requirement #07: demonstrate debugging trick
+      //----------------------------------------------------------------------
+      //
+      // At this line I was receiving a segfault error on runtime
+      // I was able to locate this using GDB and the where command
+      // It was due to the wrong variable being compared for termination
+      //
       cells[row][col] = DEAD;
 
       if(++col<this->WORLD_WIDTH){
          ClearLiveCells(cells,row,col);
-      } else if(++row < this->WORLD_WIDTH){
-         ClearLiveCells(cells,col,0);
+      } else if(++row < this->WORLD_HEIGHT){
+         ClearLiveCells(cells,row,0);
       }
    }
 
@@ -84,7 +96,10 @@ public:
       ClearLiveCells(pNextGen);
 
 
-      //todo make an array from the set //*pThisGen = start;
+      for( GOL::LivingCellStartSet::const_iterator it = start.begin();
+            it != start.end(); it++){
+         pThisGen[it->y][it->x] = ALIVE;
+      }
 
    }
 
@@ -168,6 +183,11 @@ public:
 ////////////////////////////////////////////////////////////
 
 
+#include <fstream>
+#include <iostream>
+#include <string>
+using namespace std;
+
 
 
 class ArrayWorldDisplay: public WorldDisplayInterface{
@@ -192,6 +212,7 @@ public:
             }
          }
       }
+
 
       mLookup = mAlive.begin();
 

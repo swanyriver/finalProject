@@ -136,10 +136,20 @@ int main( int argc , char **argv){
    myCreator.getSet(genesis,RandomWalker::GetWalkString(max,SATURATION),
            WORLD_WIDTH/2,WORLD_HEIGHT/2);
 
+
+   //----------------------------------------------------------------------
+   // Requirement #24: demonstrate polymorphism and inheritance
+   //----------------------------------------------------------------------
+   //
+   //The map and Set based world or Array based world can both be used
+   // Interchangeably,  they both implement the display and reaping interfaces
+   // the God controller class and the Display function can interact with them
+   // both through pointers to the interface classes.
    God myGod( new MpSWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ) );
 
    if(ArrayWorld){
-      God myGod( new ArrayWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ));
+      myGod =
+            God( new ArrayWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ));
    }
 
    WorldDisplayInterface* VoiceOfGod = myGod.GetWorldDisplayInt();
@@ -262,6 +272,10 @@ bool input(){
       //----------------------------------------------------------------------
       // This allows me to check the functioning of this input function
       // I can observe the output live using 'tail filename -f'
+
+      //----------------------------------------------------------------------
+      // Requirement #23: Demonstrate File IO
+      //----------------------------------------------------------------------
 
       ////logfile output
       ofstream log(logFileName, ios::app);
