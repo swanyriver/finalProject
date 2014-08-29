@@ -95,7 +95,6 @@ int main( int argc , char **argv){
    //these values are modified by the function and those modifications persist
    int row,col;
 
-
    if(ManualScreenSize){
       getScreenSize(row,col);
    }else{

@@ -48,12 +48,6 @@ private:
    //----------------------------------------------------------------------
    void ClearLiveCells(liveCells cells, int row = 0, int col = 0){
 
-      ////alternate iterative version
-      /*for (int row = 0; row < this->WORLD_HEIGHT; row++){
-         for (int col = 0; col < this->WORLD_WIDTH; col++){
-            cells[row][col] = DEAD;
-         }
-      }*/
 
       //----------------------------------------------------------------------
       // Requirement #06: demonstrate error categories   -RUNTIME
@@ -65,6 +59,7 @@ private:
       // At this line I was receiving a segfault error on runtime
       // I was able to locate this using GDB and the where command
       // It was due to the wrong variable being compared for termination
+      //       if(++col<this->WORLD_HEIGHT){
       //
       cells[row][col] = DEAD;
 
@@ -73,6 +68,22 @@ private:
       } else if(++row < this->WORLD_HEIGHT){
          ClearLiveCells(cells,row,0);
       }
+
+      //----------------------------------------------------------------------
+      // Requirement #06: demonstrate error categories   -SYNTAX
+      //----------------------------------------------------------------------
+      //
+      // these kind of errors occur less often, mostly because i use an IDE
+      // and obvious errors like a missing ; or an unclosed ( { are caught
+      // before compile and underlined red
+      // examples would be for the above line
+      //      ClearLiveCells(cells,row,0)    missing semicolon
+      //      Clearlivecells(cells,row,0);   misspelled function call
+      //      ClearLiveCells(cells,0);       no matching funciton signature
+      //
+      //  these kind of errors would prevent a succesful compile
+      //
+
    }
 
 public:
