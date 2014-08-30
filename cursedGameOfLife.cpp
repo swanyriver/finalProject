@@ -151,6 +151,11 @@ int main( int argc , char **argv){
             God( new ArrayWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ));
    }
 
+
+   //-----------------------------------------------------------------------
+   // 16. Demonstrates definition and use of class
+   //-----------------------------------------------------------------------
+   // using custom classes God, and WorldDisplayInterface
    WorldDisplayInterface* VoiceOfGod = myGod.GetWorldDisplayInt();
 
 

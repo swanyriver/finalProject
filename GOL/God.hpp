@@ -12,6 +12,11 @@
 #include "World.hpp"
 #include "Angel.hpp"
 
+
+
+//-----------------------------------------------------------------------
+// 16. Demonstrates definition and use of class
+//------------------------------------------------------------------------
 class God {
 private:
    WORLD *myWORLD;

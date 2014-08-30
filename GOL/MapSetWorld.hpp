@@ -212,6 +212,11 @@ public:
       return(mNbLookUp == mpsWorld->mNeigborNums.end());
    }
    virtual GOL::cell NextNeighbor (){
+
+
+      //-----------------------------------------------------------------------
+      // 16. Demonstrates definition and use of struct
+      //-----------------------------------------------------------------------
       GOL::cell result;
       result.location=mNbLookUp->first;
       result.numNeighbors = mNbLookUp->second;
