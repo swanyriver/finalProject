@@ -10,6 +10,7 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <cstdlib>
 
 //#include "SwansonLibs/swansonInput.hpp"
 //#include "SwansonLibs/swansonUtils.hpp"
@@ -26,32 +27,61 @@
 
 using namespace std;
 
+// Control keys for game of life
 const char FASTER = 'w';
 const char SLOWER = 's';
 const char QUIT = 'q';
 
+// controls for halfDelay(),  sets speed of animation
 const int START_TENTHS_OF_SECOND = 3;
 const int MAX_TENTHS_OF_SECOND = 10;
 
+//----------------------------------------------------------------------
+// Requirement #10: Demonstrate scope
+//----------------------------------------------------------------------
+// this variable is defined globally, therefore it is accessible to
+// all functions in this .cpp file
 int delayTenthsOfASecond = START_TENTHS_OF_SECOND;
 
 
 //----------------------------------------------------------------------
-// Requirement #12: demonstrate cstring and string
+// Requirement #12: demonstrate cstring and string    C-STRING
 //----------------------------------------------------------------------
-//   See also WalkerMaker.hpp
-
 const char logFileName[9] = {'l','i','f','e','.','l','o','g','\0'};
 
-const string ARRAY_WORLD_ARG = "-a";
-const string MANUAL_SCREEN_SIZE = "-s";
 
+////////////////////////////////////////////////////////
+//////////////command line arguments////////////////////
+////////////////////////////////////////////////////////
+const string ARRAY_WORLD_ARG = "-a";      // uses array world class
+const string MANUAL_SCREEN_SIZE = "-s";   // allows for input of screen size
+const string HELP_ARG = "--help";         // display readme.txt
+
+const string HELP_FILENAME = "readme.txt"; // filename of help file
+
+
+////////////////////////////////////////////////////////
+////////////Function Definitions////////////////////////
+////////////////////////////////////////////////////////
+
+//manual input of screen size
 void getScreenSize(int &row, int &col);
+
+//display the state of the game of life world
 void outputWorldINT ( WorldDisplayInterface* display , int numberOfGenerations,
       int height );
+
+//get keyboard input between screen updates
 bool input();
 
+//display contents of readme.txt
+void help();
 
+
+
+///////////////////////////////////////////////////////////////////////
+//////////Int main()     main program//////////////////////////////////
+///////////////////////////////////////////////////////////////////////
 int main( int argc , char **argv){
 
    ///////////////////////////////////////////////////////////////////////
@@ -63,15 +93,26 @@ int main( int argc , char **argv){
    //----------------------------------------------------------------------
    // Requirement #15: demonstrate command line arguments
    //----------------------------------------------------------------------
-   // checks for -s and -a
+   // checks for -s and -a and --help
    // affects the setting of manual screen size and usage of array world
+   // --help displays readme.txt and then exit programs
+
+   //check all arguments except program name
    for(int i=1;i<argc;i++){
 
-      if(ARRAY_WORLD_ARG == string(argv[i])){
+      //check if -a is passed in
+      if(string(argv[i]) == ARRAY_WORLD_ARG){
          ArrayWorld = true;
       }
-      if(MANUAL_SCREEN_SIZE == string(argv[i])){
+
+      //check if -s is passed in
+      if(string(argv[i]) == MANUAL_SCREEN_SIZE){
          ManualScreenSize = true;
+      }
+
+      //check if --help is passed in
+      if(string(argv[i]) == HELP_ARG){
+         help();
       }
    }
 
@@ -153,7 +194,7 @@ int main( int argc , char **argv){
 
 
    //-----------------------------------------------------------------------
-   // 16. Demonstrates definition and use of class
+   // Requirement #16. Demonstrates definition and use of class
    //-----------------------------------------------------------------------
    // using custom classes God, and WorldDisplayInterface
    WorldDisplayInterface* VoiceOfGod = myGod.GetWorldDisplayInt();
@@ -197,6 +238,8 @@ int main( int argc , char **argv){
 
 
    endwin();
+
+   return 0;
 
 }
 
@@ -306,6 +349,29 @@ bool input(){
    return false;
 }
 
+void help(){
+
+   //----------------------------------------------------------------------
+   // Requirement #23: Demonstrate File IO
+   //----------------------------------------------------------------------
+   ifstream helpin(HELP_FILENAME.c_str());
+
+   if(helpin.fail()){
+      cout << "\ncommand line arguments are "
+            << "\n -a  for alternate sublcass using arrays"
+            << "\n -s  for the manual input of screen resolution"
+            << "\n\nplease see the contents of readme.txt for more" << endl;
+   } else{
+
+      while(helpin){
+         string helptext;
+         getline(helpin,helptext);
+         cout << helptext << "\n";
+      }
+      cout << endl;
+   }
+   exit(0);
+}
 
 
 

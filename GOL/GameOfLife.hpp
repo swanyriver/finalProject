@@ -13,7 +13,7 @@
 namespace GOL{
 
    //-----------------------------------------------------------------------
-   // 16. Demonstrates definition and use of struct
+   // Requirement #16. Demonstrates definition and use of struct
    //------------------------------------------------------------------------
    struct cordinate{
       int x,y;

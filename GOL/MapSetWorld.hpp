@@ -215,7 +215,7 @@ public:
 
 
       //-----------------------------------------------------------------------
-      // 16. Demonstrates definition and use of struct
+      // Requirement #16. Demonstrates definition and use of struct
       //-----------------------------------------------------------------------
       GOL::cell result;
       result.location=mNbLookUp->first;

@@ -15,7 +15,7 @@
 
 
 //-----------------------------------------------------------------------
-// 16. Demonstrates definition and use of class
+// Requirement #16. Demonstrates definition and use of class
 //------------------------------------------------------------------------
 class God {
 private:
