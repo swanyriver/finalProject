@@ -47,7 +47,7 @@ public:
 
 
    //----------------------------------------------------------------------
-   // Requirement #25: demonstrate overloaded operator
+   // Requirement #22: demonstrate overloaded operator
    //----------------------------------------------------------------------
    //
    // provides a syntax sugar way to call the Generation() method
