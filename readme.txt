@@ -4,6 +4,9 @@ an output with animation and user input.
 The provided makefile will compile this program for you simply type:
 "make"
 
+This game will work on LARGE TERMINALS,  expand your terminal window to as large
+as possible before begining.
+
 Contols of the game are as follows
 w - speed up animation
 s - slow down animation
