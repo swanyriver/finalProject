@@ -55,6 +55,7 @@ const char logFileName[9] = {'l','i','f','e','.','l','o','g','\0'};
 ////////////////////////////////////////////////////////
 const string ARRAY_WORLD_ARG = "-a";      // uses array world class
 const string MANUAL_SCREEN_SIZE = "-s";   // allows for input of screen size
+const string NO_COLOR_ARG = "-c";         // disables color mode
 const string HELP_ARG = "--help";         // display readme.txt
 
 const string HELP_FILENAME = "readme.txt"; // filename of help file
@@ -89,6 +90,7 @@ int main( int argc , char **argv){
    ///////////////////////////////////////////////////////////////////////
    bool ManualScreenSize = false;
    bool ArrayWorld = false;
+   bool ColorOn = true;
 
    //----------------------------------------------------------------------
    // Requirement #15: demonstrate command line arguments
@@ -110,17 +112,18 @@ int main( int argc , char **argv){
          ManualScreenSize = true;
       }
 
+      //check if -c is passed in
+      if(string(argv[i]) == NO_COLOR_ARG){
+         ColorOn = false;
+      }
+
       //check if --help is passed in
       if(string(argv[i]) == HELP_ARG){
          help();
       }
    }
 
-   //initializations
    swansonB::SeedRandom();
-
-   GOL::LivingCellStartSet genesis;
-
 
    initscr();  //start curses
 
@@ -137,7 +140,7 @@ int main( int argc , char **argv){
    int row,col;
 
    if(ManualScreenSize){
-      getScreenSize(row,col);
+      getScreenSize(row,col); // input screen size, as per command arg
    }else{
 
       //----------------------------------------------------------------------
@@ -145,15 +148,15 @@ int main( int argc , char **argv){
       //----------------------------------------------------------------------
       class dimensions_missing{};
       try{
-         getmaxyx(stdscr,row,col);
+         getmaxyx(stdscr,row,col);     //ncurses checks terminal size
 
-         if( row == 0 || col == 0 ){
+         if( row == 0 || col == 0 ){   //unsuccessful read of terminal size
             dimensions_missing exep;
             throw (exep);
          }
       }
       catch(dimensions_missing&){
-         getScreenSize(row,col);
+         getScreenSize(row,col);       //respond to exception, manual input
       }
    }
 
@@ -170,9 +173,14 @@ int main( int argc , char **argv){
    ///////////////initialize game of life cells///////////////////////////
    ////////////////////////////////////////////////////////////////////////
 
+   GOL::LivingCellStartSet genesis;
+
    Walker myCreator(WORLD_WIDTH,WORLD_HEIGHT);
 
    int max = WORLD_HEIGHT*WORLD_WIDTH;
+
+   //randomly create a starting set, using a "walking" random algorithm
+   //pass in total available cells, desired saturation level, and center cords
    myCreator.getSet(genesis,RandomWalker::GetWalkString(max,SATURATION),
            WORLD_WIDTH/2,WORLD_HEIGHT/2);
 
@@ -187,7 +195,7 @@ int main( int argc , char **argv){
    // both through pointers to the interface classes.
    God myGod( new MpSWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ) );
 
-   if(ArrayWorld){
+   if(ArrayWorld){  //use array world as per command line argument
       myGod =
             God( new ArrayWorldBuilder( WORLD_WIDTH , WORLD_HEIGHT , genesis ));
    }
@@ -203,14 +211,25 @@ int main( int argc , char **argv){
    ////////////////////////////////////////////////////////////////////////
    ////////////////initializing window settings///////////////////////////
    ////////////////////////////////////////////////////////////////////////
+
+   //setup input, characters don't echo, and are available before return key
+   // pressed,  halfdelay allows to wait x tenthes of second for input before
+   // carrying on with program,  returning ERR character
    cbreak();
    halfdelay(delayTenthsOfASecond);
    noecho();
 
-   start_color();
+   //begin color mode and define color scheme
+   if(ColorOn) start_color();
    init_pair(2,COLOR_GREEN,COLOR_GREEN);
 
-   bool quit;
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/////////////////////PRIMARY PROGRAM LOOP//////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
    //----------------------------------------------------------------------
    // Requirement #04: demonstrate a loop
@@ -230,21 +249,17 @@ int main( int argc , char **argv){
       //advance game of life world
       myGod++;
 
-      ///change speed of animation or quit
-      quit = input();
+   } while (input());  ///change speed of animation or quit
 
+   endwin(); //exit curses window
 
-   } while (!quit);
-
-
-   endwin();
-
-   return 0;
+   return 0; //end program
 
 }
 
 void getScreenSize(int &row, int &col){
-   endwin();
+
+   endwin();  //disable curses mode
 
    //----------------------------------------------------------------------
    // Requirement #01: demonstrate simple IO
@@ -254,10 +269,11 @@ void getScreenSize(int &row, int &col){
 
    cout << "Please manually enter your screen resolution" << endl;
 
+   //get ints between 0 and 150
    row =swansonB::GetInt("Rows: ",0,150);
    col =swansonB::GetInt("Columns: ",0,150);
 
-   initscr();
+   initscr();  //return to ncuses mode
 
 }
 
@@ -269,13 +285,21 @@ void getScreenSize(int &row, int &col){
 void outputWorldINT ( WorldDisplayInterface* display , int numberOfGenerations,
       int height){
 
-   clear();
-   display->LivingCellBegin();
-   while ( !display->LivingCellsEnd()) {
-      GOL::cordinate nextCord = display->NextLivingCellLoc();
-      mvaddch(nextCord.y,nextCord.x,' ' | COLOR_PAIR(2));
-   }
+   clear();                         //empty window contents
+   display->LivingCellBegin();      //set display iterator to beginning;
 
+   while ( !display->LivingCellsEnd()) {
+
+      //use display interface to retrieve next coordinate
+      GOL::cordinate nextCord = display->NextLivingCellLoc();
+
+      //add single character to window at y,x
+      mvaddch(nextCord.y,nextCord.x,'#' | COLOR_PAIR(2));
+   }
+   /////////////////////////////////////////////////////////////////
+   ///////build a string to add to bottom of display////////////////
+   /////generations counts/////////////////////controls/////////////
+   /////////////////////////////////////////////////////////////////
    string bottomLine = "Generations:";
    bottomLine+= swansonB::GetString(numberOfGenerations);
    bottomLine+= "  Speed up:";
@@ -285,7 +309,7 @@ void outputWorldINT ( WorldDisplayInterface* display , int numberOfGenerations,
    bottomLine+= " Quit:";
    bottomLine+= swansonB::GetString(QUIT);
 
-   mvaddstr(height,0,bottomLine.c_str());
+   mvaddstr(height,0,bottomLine.c_str());    //add string to window
 
    //----------------------------------------------------------------------
    // Requirement #11: Demonstrate Passing methods - Pass by value
@@ -305,22 +329,22 @@ void outputWorldINT ( WorldDisplayInterface* display , int numberOfGenerations,
 //////////////////input
 
 bool input(){
-   char input = getch();
+   char input = getch();  // use curses input to get character
 
-   if(input != ERR){
+   if(input != ERR){      //if input was received, halfdelay not passed
       switch (input) {
          case FASTER:
             if(delayTenthsOfASecond > 1){
-               halfdelay(--delayTenthsOfASecond);
+               halfdelay(--delayTenthsOfASecond);  //speed up animation
             }
             break;
          case SLOWER:
             if(delayTenthsOfASecond < MAX_TENTHS_OF_SECOND){
-               halfdelay(++delayTenthsOfASecond);
+               halfdelay(++delayTenthsOfASecond);  //slow down animation
             }
             break;
          case QUIT:
-            return true;
+            return false;     //will end main loop
 
             break;
          default:
@@ -338,15 +362,15 @@ bool input(){
       //----------------------------------------------------------------------
 
       ////logfile output
-      ofstream log(logFileName, ios::app);
+      ofstream log(logFileName, ios::app);   //open in append mode
       log << "input received: " << input
             << " , updating every " << delayTenthsOfASecond
             << " tenths of a second" << endl;
-      log.close();
+      log.close();                           //close file
 
    }
 
-   return false;
+   return true;
 }
 
 void help(){
@@ -360,6 +384,7 @@ void help(){
       cout << "\ncommand line arguments are "
             << "\n -a  for alternate sublcass using arrays"
             << "\n -s  for the manual input of screen resolution"
+            << "\n -c  to disable color mode"
             << "\n\nplease see the contents of readme.txt for more" << endl;
    } else{
 

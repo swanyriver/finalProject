@@ -16,4 +16,7 @@ The following command line arguments will modify the programs behavior
 "-a" uses an alternate subclass for storing the state of the world that uses
      two dynamic two dimensional boolean arrays instead of a set of cordinates
      
+"-c" will disable color mode, use this if your terminal emulator is not
+     displaying the game correctly
+     
 "--help" will display the contents of this document
