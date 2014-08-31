@@ -4,8 +4,8 @@ an output with animation and user input.
 The provided makefile will compile this program for you simply type:
 "make"
 
-This game will attempt to match the size of your terminal.  However Large 
-terminal sizes over SSH sometimes present lag problems and visual 
+This game will attempt to match the size of your terminal.  However terminal
+sizes larger than 80x22 over SSH sometimes present lag problems and visual 
 aborations will be observed.  A large simulation of the Game Of Life is
 best viewed on a local machine.
 
