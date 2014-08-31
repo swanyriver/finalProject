@@ -378,9 +378,10 @@ void help(){
    //----------------------------------------------------------------------
    // Requirement #23: Demonstrate File IO
    //----------------------------------------------------------------------
-   ifstream helpin(HELP_FILENAME.c_str());
+   ifstream helpin(HELP_FILENAME.c_str());   //open readme.txt
 
-   if(helpin.fail()){
+   if(helpin.fail()){                        //Unsuccessful open of file
+                                             //output abbreviated information
       cout << "\ncommand line arguments are "
             << "\n -a  for alternate sublcass using arrays"
             << "\n -s  for the manual input of screen resolution"
@@ -388,10 +389,11 @@ void help(){
             << "\n\nplease see the contents of readme.txt for more" << endl;
    } else{
 
+      //while streams failbit is not set, reads to end of file
       while(helpin){
          string helptext;
-         getline(helpin,helptext);
-         cout << helptext << "\n";
+         getline(helpin,helptext);  //get one line of text
+         cout << helptext << "\n";  //output text
       }
       cout << endl;
    }
