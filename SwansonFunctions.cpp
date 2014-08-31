@@ -56,7 +56,7 @@ string swansonB::GetString ( string prompt ) {
  ******************************************************************************/
 
 //----------------------------------------------------------------------
-// Requirement #09: demonstrate function and overloading
+// Requirement #08: demonstrate function and overloading
 //----------------------------------------------------------------------
 int swansonB::GetInt ( string prompt ) {
    return swansonB::GetInt( prompt , INT_MIN , INT_MAX );
